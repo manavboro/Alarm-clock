@@ -28,7 +28,20 @@ class AddAlarmActivity : AppCompatActivity() {
 
     private fun schedulerAlarm() {
         val alarmId = System.currentTimeMillis().toInt()
-        val alarm = Alarm("")
+
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar[Calendar.HOUR_OF_DAY] = mBinding.timePicketButton.currentHour
+        calendar[Calendar.MINUTE] = mBinding.timePicketButton.currentMinute
+        calendar[Calendar.SECOND] = 0
+        calendar[Calendar.MILLISECOND] = 0
+
+        // if alarm time has already passed, increment day by 1
+        if (calendar.timeInMillis <= System.currentTimeMillis()) {
+            calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH] + 1
+        }
+
+        val alarm = Alarm("First Alarm", calendar.timeInMillis)
 
         //1. insert to database
         val alarmRepository = AlarmRepository(this)
@@ -37,20 +50,8 @@ class AddAlarmActivity : AppCompatActivity() {
         //2. scheduler alarm
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmBroadcastReceiver::class.java)
+        intent.putExtra("TITLE", title)
         val alarmPendingIntent = PendingIntent.getBroadcast(this, alarmId, intent, 0)
-
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis()
-        calendar[Calendar.HOUR_OF_DAY] = 1
-        calendar[Calendar.MINUTE] = 1
-        calendar[Calendar.SECOND] = 0
-        calendar[Calendar.MILLISECOND] = 0
-
-
-        // if alarm time has already passed, increment day by 1
-        if (calendar.timeInMillis <= System.currentTimeMillis()) {
-            calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH] + 1
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(

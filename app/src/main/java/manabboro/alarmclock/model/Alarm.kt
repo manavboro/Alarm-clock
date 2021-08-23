@@ -1,9 +1,13 @@
 package manabboro.alarmclock.model
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "alarm_table")
-class Alarm(val title: String) {
+class Alarm(val title: String, val time: Long) {
+
+    @PrimaryKey(autoGenerate = true)
+     var id: Int=0
 
 // fun cancelAlarm(context: Context) {
 //  val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import manabboro.alarmclock.model.Alarm
 import java.util.concurrent.Executors
 
-@Database(entities = [Alarm::class], version = 1, exportSchema = false)
+@Database(entities = [Alarm::class], version = 2, exportSchema = false)
 abstract class AlarmDatabase : RoomDatabase() {
     abstract fun alarmDao(): AlarmDao?
 
@@ -18,16 +18,18 @@ abstract class AlarmDatabase : RoomDatabase() {
         private var INSTANCE: AlarmDatabase? = null
 
         fun getDatabase(context: Context): AlarmDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AlarmDatabase::class.java,
-                    "word_database"
-                ).build()
-                INSTANCE = instance
-
-                instance
+            if (INSTANCE == null) {
+                synchronized(this) {
+                    INSTANCE = Room.databaseBuilder(
+                        context.applicationContext,
+                        AlarmDatabase::class.java,
+                        "alarm_database"
+                    ).fallbackToDestructiveMigration()
+                        .build()
+                }
             }
+
+            return INSTANCE!!
         }
 
     }

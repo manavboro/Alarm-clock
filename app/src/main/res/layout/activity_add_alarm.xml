@@ -20,5 +20,25 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TimePicker
+            android:id="@+id/time_picket_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/time_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="@+id/time_picket_button"
+            app:layout_constraintStart_toStartOf="@+id/time_picket_button"
+            app:layout_constraintTop_toBottomOf="@+id/time_picket_button" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
