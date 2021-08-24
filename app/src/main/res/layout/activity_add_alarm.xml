@@ -29,16 +29,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
             android:id="@+id/time_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="16dp"
-            android:text="TextView"
-            app:layout_constraintEnd_toEndOf="@+id/time_picket_button"
-            app:layout_constraintStart_toStartOf="@+id/time_picket_button"
+            android:text="Title"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/time_picket_button" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/title_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="@+id/time_text_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/time_text_view"
+            app:layout_constraintTop_toTopOf="@+id/time_text_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

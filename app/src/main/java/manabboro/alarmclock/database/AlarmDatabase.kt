@@ -25,6 +25,7 @@ abstract class AlarmDatabase : RoomDatabase() {
                         AlarmDatabase::class.java,
                         "alarm_database"
                     ).fallbackToDestructiveMigration()
+                        .allowMainThreadQueries()
                         .build()
                 }
             }

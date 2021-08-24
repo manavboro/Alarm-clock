@@ -23,10 +23,12 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
 
     private fun startAlarmService(context: Context?, intent: Intent) {
         val intentService = Intent(context, AlarmService::class.java)
-        intentService.putExtra(
-            "TITLE",
-            intent.getStringExtra("TITLE")
-        )
+
+        val data = intent.getStringExtra("TITLE")
+
+        intentService.putExtra("TITLE", "")
+        intentService.putExtra("ID", intent.getIntExtra("ID", 0))
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context!!.startForegroundService(intentService)
         } else {

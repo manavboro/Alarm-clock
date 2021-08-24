@@ -26,4 +26,8 @@ class AlarmRepository(context: Context?) {
         return alarmsLiveData
     }
 
+    fun findItem(id: Int):Alarm {
+        return alarmDao!!.findItem(id)
+    }
+
 }

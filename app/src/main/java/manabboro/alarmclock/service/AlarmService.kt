@@ -19,11 +19,17 @@ class AlarmService : Service() {
         return null
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val notificationIntent = Intent(this, RingingActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+    override fun onCreate() {
+        super.onCreate()
+    }
 
-//        val alarmTitle = String.format("%s Alarm", intent!!.getStringExtra("TITLE"))
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val v = intent!!.getStringExtra("TITLE")
+        val notificationIntent = Intent(this, RingingActivity::class.java)
+        notificationIntent.putExtra("TITLE", "")
+        notificationIntent.putExtra("ID", intent.getIntExtra("ID", 0))
+
+        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(CHANNEL_ID, "Alarm")
@@ -37,12 +43,12 @@ class AlarmService : Service() {
             .build()
 
 //        mediaPlayer.start()
-
 //        val pattern = longArrayOf(0, 100, 1000)
 //        vibrator.vibrate(pattern, 0)
 
         startForeground(1, notification)
-        return START_STICKY
+//        return START_STICKY
+        return START_REDELIVER_INTENT
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

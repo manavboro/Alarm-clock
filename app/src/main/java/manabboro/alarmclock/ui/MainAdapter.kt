@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import manabboro.alarmclock.R
 import manabboro.alarmclock.model.Alarm
 
-class MainAdapter constructor(context: Context) :
+class MainAdapter constructor(val context: Context) :
     RecyclerView.Adapter<MainViewHolder>() {
 
     private val mInflater = LayoutInflater.from(context)
@@ -20,6 +20,9 @@ class MainAdapter constructor(context: Context) :
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         holder.bind(mData[position])
+        holder.toggle.setOnCheckedChangeListener { compoundButton, isChecked ->
+            mData[position].toggleAlarm(isChecked, context)
+        }
     }
 
     override fun getItemCount(): Int {
