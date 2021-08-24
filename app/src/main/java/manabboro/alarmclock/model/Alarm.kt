@@ -10,6 +10,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import manabboro.alarmclock.database.AlarmRepository
 import manabboro.alarmclock.receiver.AlarmBroadcastReceiver
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Entity(tableName = "alarm_table")
@@ -22,6 +23,7 @@ class Alarm {
     var title: String = ""
     var hour: Int = 0
     var minute: Int = 0
+    var time: Long = 0
     var isChecked: Boolean = false
 
 
@@ -42,6 +44,8 @@ class Alarm {
         if (calendar.timeInMillis <= System.currentTimeMillis()) {
             calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH] + 1
         }
+
+        time = calendar.timeInMillis
 
         val alarmRepository = AlarmRepository(context)
         alarmRepository.insert(this)
@@ -79,8 +83,11 @@ class Alarm {
         val intent = Intent(context, AlarmBroadcastReceiver::class.java)
         val alarmPendingIntent = PendingIntent.getBroadcast(context, id, intent, 0)
         alarmManager.cancel(alarmPendingIntent)
-
-
     }
 
+    fun formatdate(): String {
+        val date = Date(time)
+        val formatter = SimpleDateFormat("hh:mm a");
+       return formatter.format(date);
+    }
 }

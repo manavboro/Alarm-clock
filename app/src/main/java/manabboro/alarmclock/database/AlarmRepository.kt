@@ -15,7 +15,7 @@ class AlarmRepository(context: Context?) {
     }
 
     fun insert(alarm: Alarm?) {
-        AlarmDatabase.databaseWriteExecutor.execute(Runnable { alarmDao!!.insert(alarm) })
+        AlarmDatabase.databaseWriteExecutor.execute { alarmDao!!.insert(alarm) }
     }
 
     fun update(alarm: Alarm?) {

@@ -1,6 +1,7 @@
 package manabboro.alarmclock.service
 
 import android.app.*
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -25,18 +26,19 @@ class AlarmService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val v = intent!!.getStringExtra("TITLE")
+
         val notificationIntent = Intent(this, RingingActivity::class.java)
-        notificationIntent.putExtra("TITLE", "")
+        notificationIntent.putExtra("TITLE", v)
         notificationIntent.putExtra("ID", intent.getIntExtra("ID", 0))
 
-        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, FLAG_UPDATE_CURRENT)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(CHANNEL_ID, "Alarm")
         }
 
         val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("alarmTitle")
+            .setContentTitle(v)
             .setContentText("Ring Ring .. Ring Ring")
             .setSmallIcon(R.drawable.ic_stat_access_alarm)
             .setContentIntent(pendingIntent)
@@ -47,8 +49,7 @@ class AlarmService : Service() {
 //        vibrator.vibrate(pattern, 0)
 
         startForeground(1, notification)
-//        return START_STICKY
-        return START_REDELIVER_INTENT
+        return START_STICKY
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

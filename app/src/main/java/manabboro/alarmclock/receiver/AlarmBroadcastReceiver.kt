@@ -26,7 +26,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
 
         val data = intent.getStringExtra("TITLE")
 
-        intentService.putExtra("TITLE", "")
+        intentService.putExtra("TITLE", data)
         intentService.putExtra("ID", intent.getIntExtra("ID", 0))
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
