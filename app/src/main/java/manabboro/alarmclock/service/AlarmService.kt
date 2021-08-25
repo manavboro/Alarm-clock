@@ -10,7 +10,7 @@ import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import manabboro.alarmclock.R
-import manabboro.alarmclock.ui.RingingActivity
+import manabboro.alarmclock.ui.AlarmActivity
 
 class AlarmService : Service() {
 
@@ -20,33 +20,28 @@ class AlarmService : Service() {
         return null
     }
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val v = intent!!.getStringExtra("TITLE")
+        val alarmTitle = intent!!.getStringExtra("TITLE")
+        val alarmTime = intent.getStringExtra("ALARM_TIME")
 
-        val notificationIntent = Intent(this, RingingActivity::class.java)
-        notificationIntent.putExtra("TITLE", v)
+        val notificationIntent = Intent(this, AlarmActivity::class.java)
+        notificationIntent.putExtra("TITLE", alarmTitle)
         notificationIntent.putExtra("ID", intent.getIntExtra("ID", 0))
+        notificationIntent.putExtra("ALARM_TIME", intent.getStringExtra("ALARM_TIME"))
 
-        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, FLAG_UPDATE_CURRENT)
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, notificationIntent, FLAG_UPDATE_CURRENT)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(CHANNEL_ID, "Alarm")
         }
 
         val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(v)
-            .setContentText("Ring Ring .. Ring Ring")
+            .setContentTitle(alarmTitle)
+            .setContentText(alarmTime)
             .setSmallIcon(R.drawable.ic_stat_access_alarm)
             .setContentIntent(pendingIntent)
             .build()
-
-//        mediaPlayer.start()
-//        val pattern = longArrayOf(0, 100, 1000)
-//        vibrator.vibrate(pattern, 0)
 
         startForeground(1, notification)
         return START_STICKY
@@ -54,14 +49,14 @@ class AlarmService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(channelId: String, channelName: String): String {
-        val chan = NotificationChannel(
+        val channel = NotificationChannel(
             channelId,
-            channelName, NotificationManager.IMPORTANCE_NONE
+            channelName, NotificationManager.IMPORTANCE_HIGH
         )
-        chan.lightColor = Color.BLUE
-        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        channel.lightColor = Color.BLUE
+        channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        service.createNotificationChannel(chan)
+        service.createNotificationChannel(channel)
         return channelId
     }
 }

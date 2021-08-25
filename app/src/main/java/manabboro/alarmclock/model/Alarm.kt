@@ -16,7 +16,6 @@ import java.util.*
 @Entity(tableName = "alarm_table")
 class Alarm {
 
-
     @PrimaryKey
     var id: Int = 0
     var created: Long = 0
@@ -54,6 +53,7 @@ class Alarm {
         val alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmBroadcastReceiver::class.java)
         intent.putExtra("TITLE", title)
+        intent.putExtra("ALARM_TIME", formatdate())
         intent.putExtra("ID", id)
 
         val alarmPendingIntent = PendingIntent.getBroadcast(context, id, intent, 0)
@@ -88,6 +88,6 @@ class Alarm {
     fun formatdate(): String {
         val date = Date(time)
         val formatter = SimpleDateFormat("hh:mm a");
-       return formatter.format(date);
+        return formatter.format(date);
     }
 }

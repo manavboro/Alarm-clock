@@ -14,12 +14,15 @@ class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var toggle: SwitchCompat = itemView.findViewById(R.id.toggle)
     var time: TextView = itemView.findViewById(R.id.time)
 
+    val res = itemView.context.resources
+
     fun bind(alarm: Alarm) {
         title.text = alarm.title
         time.text = alarm.formatdate()
+
         if (alarm.isChecked) {
             time.setTextColor(Color.BLACK)
-        } else time.setTextColor(Color.LTGRAY)
+        } else time.setTextColor(res.getColor(R.color.disable_color))
 
         toggle.isChecked = alarm.isChecked
     }
