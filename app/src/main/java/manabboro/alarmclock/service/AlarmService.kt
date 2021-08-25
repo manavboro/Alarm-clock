@@ -41,6 +41,7 @@ class AlarmService : Service() {
             .setContentText(alarmTime)
             .setSmallIcon(R.drawable.ic_stat_access_alarm)
             .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
 
         startForeground(1, notification)
